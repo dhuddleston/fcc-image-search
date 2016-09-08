@@ -8,10 +8,4 @@ var imageSchema = new Schema({
     pageUrl: String
 });
 
-var querySchema = new Schema({
-   term: String,
-   when: String
-});
-
 module.exports = mongoose.model('image', imageSchema);
-module.exports = mongoose.model('searchQuery', querySchema);
