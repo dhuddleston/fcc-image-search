@@ -7,7 +7,7 @@ module.exports = function(app, mongoose){
     var Bing = require("node-bing-api")({accKey: process.env.BING_KEY});
     
     app.get('/:query', getSearch);
-    app.get('/:latest', getLatest);
+    app.get('/api/latest', getLatest);
     
     function getSearch(req, res){
         var searchTerm = req.params.query;
@@ -66,12 +66,10 @@ module.exports = function(app, mongoose){
                }
                else
                {
-                   res.json(data);
+                   //res.json(data);
+                   res.send(body.d.results.map(limitResults));
                }
             });
-            
-            
-            res.send(body.d.results.map(limitResults));
             
         });
         // This works!
