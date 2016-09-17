@@ -3,7 +3,6 @@ var app = express();
 var path = require('path');
 
 var routes = require('./routes/index');
-// var users = require('./routes/users');
 var api = require('./controllers/api');
 
 // Allows the usage of process.env to get variables from the .env file
@@ -27,7 +26,6 @@ api(app, mongoose);
 
 var port = process.env.PORT || 8080;
 app.listen(port,  function () {
-	//console.log('Node.js listening on port ' + port + '...');
 });
 
 module.exports = app;
