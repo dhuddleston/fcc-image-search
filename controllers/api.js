@@ -20,8 +20,9 @@ module.exports = function(app, mongoose){
             var now = moment().toString();
             searchQuery.when = now;
             
-            
-            searchQuery.save(function(err, data){
+            if(searchTerm != "favicon.ico")
+            {
+               searchQuery.save(function(err, data){
                if(err)
                {
                    res.send(err);
@@ -32,7 +33,7 @@ module.exports = function(app, mongoose){
                    res.send(body.d.results.map(limitResults));
                }
             });
-            
+            }
         });
     }
     
@@ -46,12 +47,24 @@ module.exports = function(app, mongoose){
         };
     }
     
+    // Limit the data returned from a SearchQuery object
+    function limitHistory(historyData)
+    {
+        return{
+          "searchTerm": historyData.term,
+          "when": historyData.when
+        };
+    }
+    
     // Retrieve the last 10 searches made from the database
     function getLatest(req, res)
     {
+        // Find all SearchQuery objects
         var query = SearchQuery.find({});
         
-        query.sort('-date');
+        // Sort by date
+        query.sort( [['_id', -1]] );
+        // Limit to 10 searches
         query.limit(10);
         
         query.exec(function(err, obj){
@@ -59,7 +72,7 @@ module.exports = function(app, mongoose){
               res.send(err);
           } 
           else{
-              res.send(obj);
+              res.send(obj.map(limitHistory));
           }
         });
     }
